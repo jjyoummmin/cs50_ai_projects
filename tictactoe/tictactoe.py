@@ -3,6 +3,7 @@ Tic Tac Toe Player
 """
 
 import math
+from functools import reduce
 
 X = "X"
 O = "O"
@@ -18,25 +19,39 @@ def initial_state():
             [EMPTY, EMPTY, EMPTY]]
 
 
+def count(board, symbol):
+    return reduce(lambda cnt, row:cnt+row.count(symbol), board, 0)
+
+
 def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    raise NotImplementedError
+    return X if count(board,X)==count(board,O) else O
 
 
 def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    raise NotImplementedError
+    actions = []
+    for i,row in enumerate(board):
+        for j,col in enumerate(row):
+
+            if board[i][j] != EMPTY : continue
+            actions.append((i,j))
+
+    return actions        
+
 
 
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
+    i,j = action
+    board[i][j] = player(board)
+    return board
 
 
 def winner(board):
