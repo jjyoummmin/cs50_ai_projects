@@ -59,9 +59,11 @@ while True:
             if playXButton.collidepoint(mouse):
                 time.sleep(0.2)
                 user = ttt.X
+                ai_turn = False
             elif playOButton.collidepoint(mouse):
                 time.sleep(0.2)
                 user = ttt.O
+                ai_turn = True
 
     else:
 
