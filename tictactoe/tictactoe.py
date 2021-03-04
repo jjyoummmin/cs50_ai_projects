@@ -58,14 +58,48 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+
+    # check row bingo
+    for i in range(3):
+        symbol = board[i][0]
+        cnt = 1
+        for j in range(1,3):
+            if board[i][j] != symbol: break
+            cnt++
+        if(cnt==3) return symbol  
+
+    # check column bingo
+    for j in range(3):
+        symbol = board[0][j]
+        cnt = 1
+        for i in range(1,3):
+            if board[i][j] != symbol :break
+            cnt++
+        if(cnt==3) return symbol
+
+    # check diagonal bingo
+    symbol = board[0][0]
+    cnt = 1
+    for i in range(1,3):           
+        if board[i][i] != symbol : break
+        cnt++
+    if(cnt==3) return symbol  
+
+    symbol = board[0][2]
+    cnt = 1
+    for i in range(1,3):           
+        if board[i][2-i] != symbol : break
+        cnt++
+    if(cnt==3) return symbol    
+
+    return None
 
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+
 
 
 def utility(board):

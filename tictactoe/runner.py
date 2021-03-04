@@ -93,10 +93,11 @@ while True:
 
         # Show title
         if game_over:
-            winner = ttt.winner(board)
+            winner = ttt.winner(board) 
             if winner is None:
                 title = f"Game Over: Tie."
             else:
+                winner = "HUMAN" if winner==user else "AI"
                 title = f"Game Over: {winner} wins."
         elif user == player:
             title = f"Play as {user}"
