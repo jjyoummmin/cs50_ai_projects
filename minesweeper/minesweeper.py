@@ -89,6 +89,7 @@ class Sentence():
     Logical statement about a Minesweeper game
     A sentence consists of a set of board cells,
     and a count of the number of those cells which are mines.
+    ex) {A,B,C,D} = 3
     """
 
     def __init__(self, cells, count):
@@ -105,27 +106,34 @@ class Sentence():
         """
         Returns the set of all cells in self.cells known to be mines.
         """
-        raise NotImplementedError
+        if len(self.cells)==self.count :
+            return self.cells
+        else:
+            return set()    
 
     def known_safes(self):
         """
         Returns the set of all cells in self.cells known to be safe.
         """
-        raise NotImplementedError
+        if len(self.cells)==0 :
+            return self.cells
+        else:
+            return set()    
 
     def mark_mine(self, cell):
         """
         Updates internal knowledge representation given the fact that
         a cell is known to be a mine.
         """
-        raise NotImplementedError
+        self.cells -= cell
+        self.count -= len(cell)
 
     def mark_safe(self, cell):
         """
         Updates internal knowledge representation given the fact that
         a cell is known to be safe.
         """
-        raise NotImplementedError
+        self.cells -= cell
 
 
 class MinesweeperAI():
@@ -193,7 +201,10 @@ class MinesweeperAI():
         This function may use the knowledge in self.mines, self.safes
         and self.moves_made, but should not modify any of those values.
         """
-        raise NotImplementedError
+        not_visited_safe_cells = self.safes - self.moves_made
+        move = nov_visited_safe_cells.pop()
+        self.moves_made.add(move)
+        return move
 
     def make_random_move(self):
         """
@@ -202,4 +213,15 @@ class MinesweeperAI():
             1) have not already been chosen, and
             2) are not known to be mines
         """
-        raise NotImplementedError
+        while True:
+            i = random.randrange(self.height)
+            j = random.randrange(self.width)
+            move = (i,j)
+            if move in self.moves_made : continue
+            if move in self.mines : continue
+
+            self.moves_made.add(move)
+            return move
+
+
+
