@@ -107,7 +107,7 @@ class Sentence():
         Returns the set of all cells in self.cells known to be mines.
         """
         if len(self.cells)==self.count :
-            return self.cells
+            return self.cells.copy()
         else:
             return set()    
 
@@ -115,25 +115,29 @@ class Sentence():
         """
         Returns the set of all cells in self.cells known to be safe.
         """
-        if len(self.cells)==0 :
-            return self.cells
+        if self.count==0 :
+            return self.cells.copy()
         else:
             return set()    
-
+    # sentence에서 mine인 cell 제거
     def mark_mine(self, cell):
         """
         Updates internal knowledge representation given the fact that
         a cell is known to be a mine.
         """
-        self.cells -= cell
-        self.count -= len(cell)
+        if cell in self.cells:
+            self.cells.remove(cell)
+            self.count -= 1
 
+    # sentence 에서 safe인 cell 제거
     def mark_safe(self, cell):
         """
         Updates internal knowledge representation given the fact that
         a cell is known to be safe.
         """
-        self.cells -= cell
+        if cell in self.cells:
+            self.cells.remove(cell)
+
 
 
 class MinesweeperAI():
@@ -165,7 +169,8 @@ class MinesweeperAI():
         self.mines.add(cell)
         for sentence in self.knowledge:
             sentence.mark_mine(cell)
-
+    
+                       
     def mark_safe(self, cell):
         """
         Marks a cell as safe, and updates all knowledge
@@ -174,6 +179,8 @@ class MinesweeperAI():
         self.safes.add(cell)
         for sentence in self.knowledge:
             sentence.mark_safe(cell)
+     
+    
 
     def add_knowledge(self, cell, count):
         """
@@ -190,7 +197,70 @@ class MinesweeperAI():
             5) add any new sentences to the AI's knowledge base
                if they can be inferred from existing knowledge
         """
-        raise NotImplementedError
+        #1
+        self.moves_made.add(cell)
+
+        #2
+        self.mark_safe(cell)
+        
+        #3
+        cells = set()
+        for i in range(cell[0] - 1, cell[0] + 2):
+            for j in range(cell[1] - 1, cell[1] + 2):
+
+                # Ignore the cell itself
+                if (i, j) == cell:
+                    continue
+
+                # Update count if cell in bounds and is mine
+                if 0 <= i < self.height and 0 <= j < self.width:
+                    if (i,j) in self.mines:
+                        count -= 1
+                        continue
+                    elif (i,j) in self.safes:
+                        continue
+                    else:
+                        cells.add((i,j))        
+        new_sentence = Sentence(cells, count)
+        self.knowledge.append(new_sentence) 
+
+        #4-1 새로 mine, safe cell 알게된거 있는지 체크
+        for sentence in self.knowledge:
+            km = sentence.known_mines()
+            for mine in km:
+                sentence.mark_mine(mine)
+                self.mines.add(mine)
+            ks = sentence.known_safes()    
+            for safe in ks:
+                sentence.mark_safe(safe)
+                self.safes.add(safe)   
+        #4-2 clear empty sentence
+        will_remove = []
+        for sentence in self.knowledge:
+            if sentence.cells == set():
+                will_remove.append(sentence)
+
+        for el in will_remove:
+            self.knowledge.remove(el)        
+
+
+        #5 apply new knowledge
+        for sentence in self.knowledge:
+            (b,s) = (sentence, new_sentence) if len(sentence.cells)>len(new_sentence.cells) else (new_sentence, sentence)
+            
+            if b==s or not (s.cells).issubset((b.cells)) : continue
+
+            x = Sentence(b.cells - s.cells, b.count - s.count)
+            self.knowledge.append(x)
+
+            if b in self.knowledge:
+                self.knowledge.remove(b)
+
+        print("==sentences==")    
+        for i, sentence in enumerate(self.knowledge):  
+            print("[",i+1,"]",sentence)  
+        print("func finished")    
+
 
     def make_safe_move(self):
         """
@@ -202,7 +272,9 @@ class MinesweeperAI():
         and self.moves_made, but should not modify any of those values.
         """
         not_visited_safe_cells = self.safes - self.moves_made
-        move = nov_visited_safe_cells.pop()
+        if not_visited_safe_cells == set():
+            return None
+        move = not_visited_safe_cells.pop()
         self.moves_made.add(move)
         return move
 
