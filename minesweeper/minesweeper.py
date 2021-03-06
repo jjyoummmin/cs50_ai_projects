@@ -258,7 +258,8 @@ class MinesweeperAI():
 
         print("==sentences==")    
         for i, sentence in enumerate(self.knowledge):  
-            print("[",i+1,"]",sentence)  
+            print("[",i+1,"]",sentence) 
+        self.know_print()     
         print("func finished")    
 
 
@@ -294,6 +295,25 @@ class MinesweeperAI():
 
             self.moves_made.add(move)
             return move
+
+    def know_print(self):
+        """
+        Prints a text-based representation
+        of where mines are located.
+        """
+        for i in range(self.height):
+            print("--" * self.width + "-")
+            for j in range(self.width):
+                if (i,j) in self.moves_made :
+                    print("|O", end="")
+                elif (i,j) in self.mines :
+                    print("|M", end="")
+                elif (i,j) in self.safes :
+                    print("|S", end="")                    
+                else:
+                    print("| ", end="")
+            print("|")
+        print("--" * self.width + "-")            
 
 
 
