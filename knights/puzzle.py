@@ -9,24 +9,42 @@ BKnave = Symbol("B is a Knave")
 CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
+people = {"A":(AKnight, AKnave), 
+        "B":(BKnight, BKnave),
+        "C":(CKnight,CKnave)}
+
+def player(person):
+    knight, knave = people[person]
+    return And( Or(knight, knave), Not(And(knight, knave)))
+
+def speaks(person, speech):
+    knight, knave = people[person]
+    return And(Implication(knight, speech), Implication(knave, Not(speech)))
+
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    # TODO
+    player("A"),
+    speaks("A", And(AKnight, AKnave))
 )
 
 # Puzzle 1
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    # TODO
+    player("A"),
+    player("B"),
+    speaks("A", And(AKnave, BKnave))
 )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    player("A"),
+    player("B"),
+    speaks("A", Or(And(AKnight, BKnight), And(AKnave, BKnave))),
+    speaks("B", Or(And(AKnight, BKnave), And(AKnave, BKnight)))
 )
 
 # Puzzle 3
@@ -35,9 +53,14 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    player("A"),
+    player("B"),
+    player("C"),
+    speaks("A", Or(AKnight, AKnave)),
+    speaks("B", speaks("A", AKnave)),
+    speaks("B", CKnave),
+    speaks("C", AKnight)
 )
-
 
 def main():
     symbols = [AKnight, AKnave, BKnight, BKnave, CKnight, CKnave]
