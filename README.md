@@ -10,7 +10,7 @@
 
 ### 1. knights [link](https://cs50.harvard.edu/extension/ai/2020/spring/projects/1/knights/)
 knight이면 진실만 말하고 knave이면 거짓만 말한다.
-각 사람이 말하는 정보를 가지고 knight인지 knaved인지 맞추기
+각 사람이 말하는 정보를 가지고 knight인지 knave인지 맞추기
 
 
 실행
