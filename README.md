@@ -1,9 +1,35 @@
 # Lec0 Search
 
 ### 1. degrees [link](https://cs50.harvard.edu/extension/ai/2020/spring/projects/0/degrees/)
+케빈 베이컨의 6단계 법칙을 이용해 2명의 할리우드 배우가 몇 사람을 거쳐 연결되어 있는지 알아내기 (링크는 같이 출연한 영화)
 
+( BFS + linked list )
+
+실행 
+```
+python degrees.py small
+
+python degrees.py large
+```
+실행화면
+
+<img width="407" alt="degrees" src="https://user-images.githubusercontent.com/33231313/110240520-b2198580-7f8f-11eb-985c-3eab409834fa.PNG">
 
 ### 2. tictactoe [link](https://cs50.harvard.edu/extension/ai/2020/spring/projects/0/tictactoe/)
+유저와 tictactoe 게임하는 AI 만들기
+
+패키지설치
+```
+pip install pygame    
+```
+
+실행
+```
+python runner.py
+```
+
+실행화면
+![ttt](https://user-images.githubusercontent.com/33231313/110240266-7631f080-7f8e-11eb-8d02-e4e9c3a40318.png)
 
 
 # Lec1 Search
@@ -42,4 +68,16 @@ python runner.py
 
 
 ### 3. py2ocaml
+"x ⊨ y means x models (semantically entails) y"
+
+정보들을 propositional logic 형태로 바꾸고, 이미 알고 있는 정보로 새 쿼리를 entails 할 수 있는지 true/false로 리턴하는 함수를 구현한 logic.py와 똑같이 작동하는 ocaml 코드를 작성해봄 (잘 이해하기 위해 개인적으로 진행)
+
+ocaml 인터프리터에 파일 로드하기
+```
+#use "logic.ml"
+```
+
+실행 결과 (비교)
+![harry](https://user-images.githubusercontent.com/33231313/110240942-9fa04b80-7f91-11eb-9354-21b4f5c30ad3.png)
+![clue](https://user-images.githubusercontent.com/33231313/110240951-ae86fe00-7f91-11eb-9ea6-66bb7e0ebd88.png)
 
