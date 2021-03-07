@@ -217,6 +217,6 @@ while True:
         else:
             nearby = game.nearby_mines(move)
             revealed.add(move)
-            ai.add_knowledge(move, nearby)
+            flags = ai.add_knowledge(move, nearby)
 
     pygame.display.flip()

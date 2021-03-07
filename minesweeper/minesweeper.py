@@ -282,7 +282,8 @@ class MinesweeperAI():
         for i, sentence in enumerate(self.knowledge):  
             print("[",i+1,"]",sentence) 
         self.know_print()     
-        print("move func finished.")    
+        print("move func finished.") 
+        return self.mines   
 
 
     def make_safe_move(self):
