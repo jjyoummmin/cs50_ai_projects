@@ -160,6 +160,15 @@ class MinesweeperAI():
 
         # List of sentences about the game known to be true
         self.knowledge = []
+        self.knowledge.append(self.initial_knowledge())
+
+    def initial_knowledge(self):    
+        all = set()
+        for i in range(self.height):
+            for j in range(self.width):
+                all.add((i,j))
+
+        return (Sentence(all, 8))            
 
     def mark_mine(self, cell):
         """
@@ -187,12 +196,10 @@ class MinesweeperAI():
         for sentence in self.knowledge:
             km = sentence.known_mines()
             for mine in km:
-                sentence.mark_mine(mine)
-                self.mines.add(mine)
+                self.mark_mine(mine)
             ks = sentence.known_safes()    
             for safe in ks:
-                sentence.mark_safe(safe)
-                self.safes.add(safe)   
+                self.mark_safe(safe)  
 
         #2 clear empty sentence
         will_remove = []
@@ -218,6 +225,7 @@ class MinesweeperAI():
             5) add any new sentences to the AI's knowledge base
                if they can be inferred from existing knowledge
         """
+        print("move func start.")
         #1
         self.moves_made.add(cell)
 
@@ -274,7 +282,7 @@ class MinesweeperAI():
         for i, sentence in enumerate(self.knowledge):  
             print("[",i+1,"]",sentence) 
         self.know_print()     
-        print("func finished")    
+        print("move func finished.")    
 
 
     def make_safe_move(self):
