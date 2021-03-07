@@ -193,6 +193,7 @@ class MinesweeperAI():
             for safe in ks:
                 sentence.mark_safe(safe)
                 self.safes.add(safe)   
+
         #2 clear empty sentence
         will_remove = []
         for sentence in self.knowledge:
@@ -252,6 +253,7 @@ class MinesweeperAI():
             self.check_and_clear()
 
             #5 apply new knowledge
+            will_remove = []
             for sentence in self.knowledge:
                 (b,s) = (sentence, new_sentence) if len(sentence.cells)>len(new_sentence.cells) else (new_sentence, sentence)
             
@@ -260,8 +262,11 @@ class MinesweeperAI():
                 x = Sentence(b.cells - s.cells, b.count - s.count)
                 q.append(x)
 
-                if b in self.knowledge:
-                    self.knowledge.remove(b)
+                will_remove.append(b)
+
+            for el in will_remove:
+                if el in self.knowledge:
+                    self.knowledge.remove(el)    
       
 
 
