@@ -23,6 +23,11 @@ pip install pygame
 ```
 python runner.py
 ```
+실행화면
+![pygame](https://user-images.githubusercontent.com/33231313/110239580-1259f880-7f8b-11eb-9b8a-1592c247babc.png)
+
+
+
 
 
 ### 3. py2ocaml
