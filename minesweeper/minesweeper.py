@@ -181,6 +181,26 @@ class MinesweeperAI():
             sentence.mark_safe(cell)
      
     
+    def check_and_clear(self):
+        #1 새로 mine, safe cell 알게된거 있는지 체크
+        # 있으면 sentence에서 삭제, ai set에 추가
+        for sentence in self.knowledge:
+            km = sentence.known_mines()
+            for mine in km:
+                sentence.mark_mine(mine)
+                self.mines.add(mine)
+            ks = sentence.known_safes()    
+            for safe in ks:
+                sentence.mark_safe(safe)
+                self.safes.add(safe)   
+        #2 clear empty sentence
+        will_remove = []
+        for sentence in self.knowledge:
+            if sentence.cells == set():
+                will_remove.append(sentence)
+
+        for el in will_remove:
+            self.knowledge.remove(el)          
 
     def add_knowledge(self, cell, count):
         """
@@ -221,40 +241,29 @@ class MinesweeperAI():
                         continue
                     else:
                         cells.add((i,j))        
-        new_sentence = Sentence(cells, count)
-        self.knowledge.append(new_sentence) 
+        q = [Sentence(cells, count)]
 
-        #4-1 새로 mine, safe cell 알게된거 있는지 체크
-        for sentence in self.knowledge:
-            km = sentence.known_mines()
-            for mine in km:
-                sentence.mark_mine(mine)
-                self.mines.add(mine)
-            ks = sentence.known_safes()    
-            for safe in ks:
-                sentence.mark_safe(safe)
-                self.safes.add(safe)   
-        #4-2 clear empty sentence
-        will_remove = []
-        for sentence in self.knowledge:
-            if sentence.cells == set():
-                will_remove.append(sentence)
+        while(len(q)>0):
+            new_sentence = q.pop(0)
+            if not new_sentence in self.knowledge: 
+                self.knowledge.append(new_sentence) 
 
-        for el in will_remove:
-            self.knowledge.remove(el)        
+            #4
+            self.check_and_clear()
 
-
-        #5 apply new knowledge
-        for sentence in self.knowledge:
-            (b,s) = (sentence, new_sentence) if len(sentence.cells)>len(new_sentence.cells) else (new_sentence, sentence)
+            #5 apply new knowledge
+            for sentence in self.knowledge:
+                (b,s) = (sentence, new_sentence) if len(sentence.cells)>len(new_sentence.cells) else (new_sentence, sentence)
             
-            if b==s or not (s.cells).issubset((b.cells)) : continue
+                if b==s or not (s.cells).issubset((b.cells)) : continue
 
-            x = Sentence(b.cells - s.cells, b.count - s.count)
-            self.knowledge.append(x)
+                x = Sentence(b.cells - s.cells, b.count - s.count)
+                q.append(x)
 
-            if b in self.knowledge:
-                self.knowledge.remove(b)
+                if b in self.knowledge:
+                    self.knowledge.remove(b)
+      
+
 
         print("==sentences==")    
         for i, sentence in enumerate(self.knowledge):  
@@ -287,6 +296,9 @@ class MinesweeperAI():
             2) are not known to be mines
         """
         while True:
+            if len(self.moves_made)+len(self.mines) == self.height * self.width:
+                return None
+
             i = random.randrange(self.height)
             j = random.randrange(self.width)
             move = (i,j)
@@ -301,6 +313,7 @@ class MinesweeperAI():
         Prints a text-based representation
         of where mines are located.
         """
+        # M for mine, S for safe, O for moved
         for i in range(self.height):
             print("--" * self.width + "-")
             for j in range(self.width):
