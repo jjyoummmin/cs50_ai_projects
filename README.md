@@ -68,9 +68,12 @@ python runner.py
 
 
 ### 3. py2ocaml
+
+propositional logic
+
 "x ⊨ y means x models (semantically entails) y"
 
-정보들을 propositional logic 형태로 바꾸고, 이미 알고 있는 정보로 새 쿼리를 entails 할 수 있는지 true/false로 리턴하는 함수를 구현한 logic.py와 똑같이 작동하는 ocaml 코드를 작성해봄 (잘 이해하기 위해 개인적으로 진행)
+logic.py to logic.ml
 
 ocaml 인터프리터에 파일 로드하기
 ```
