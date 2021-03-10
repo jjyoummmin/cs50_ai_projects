@@ -95,3 +95,6 @@ ocaml logic.cmo (원하는 테스트 파일).ml
 
 ![ocaml](https://user-images.githubusercontent.com/33231313/110241086-50a6e600-7f92-11eb-8c3a-a30f0e8ea439.png)
 
+![puzzle](https://user-images.githubusercontent.com/33231313/110582819-1adf4880-81b0-11eb-93ff-7f4d3d4a9cd6.png)
+
+
