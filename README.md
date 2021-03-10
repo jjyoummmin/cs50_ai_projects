@@ -73,15 +73,13 @@ python runner.py
 
 "x ⊨ y means x models (semantically entails) y"
 
-가지고 있는 knowledge 가 query를 entail하는지 true/false로 반환하는 함수를 작성한 
-
-logic.py 파일과 테스트 케이스를 ocaml로 바꿔보기
+가지고 있는 knowledge 가 query를 entail하는지 true/false로 반환하는 함수를 작성한 logic.py 파일과 테스트 케이스를 ocaml로 바꿔보기
 
 ocaml 인터프리터에 파일 로드해서 사용하기
 ```
 #use "logic.ml"
 ```
-컴파일 해서 사용하기
+컴파일해서 사용하기
 ```
 ocamlc -c logic.ml
 
